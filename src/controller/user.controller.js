@@ -11,15 +11,18 @@ export class UserController {
     }
 
     async findById(request, response) {
-        const { id } = request.params;
+        const { id, disciplina } = request.params;
         try {
             const user = await userService.findById(id);
-            
+
             if (!user) {
                 response.status(404).json({ error: 'User not found.' });
             }
 
-            response.status(200).json(user);
+            const somaMatematica = user.disciplinas[disciplina].reduce((acc, nota) => acc + nota, 0);
+            const media = somaMatematica / user.disciplinas[disciplina].length;
+
+            response.status(200).json({ message: `A média de ${disciplina} do usuário ${user.username} é ${media.toFixed(2)}` });
         } catch (error) {
             response.status(500).json({ error: 'An error occurred while fetching the user.' });
         }
