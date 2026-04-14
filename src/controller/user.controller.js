@@ -11,6 +11,22 @@ export class UserController {
     }
 
     async findById(request, response) {
+        const { id } = request.params;
+
+        try {
+            const user = await userService.findById(id);
+
+            if (!user) {
+                response.status(404).json({ error: 'User not found' });
+            }
+
+            response.status(200).json(user);
+        } catch (error) {
+            response.status(500).json({ error: 'An error occurred while fetching users' });
+        }
+    }
+
+    async calcMed(request, response) {
         const { id, disciplina } = request.params;
         try {
             const user = await userService.findById(id);
