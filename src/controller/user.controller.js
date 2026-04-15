@@ -28,6 +28,7 @@ export class UserController {
 
     async calcMed(request, response) {
         const { id, disciplina } = request.params;
+        
         try {
             const user = await userService.findById(id);
 
@@ -41,6 +42,17 @@ export class UserController {
             response.status(200).json({ message: `A média de ${disciplina} do usuário ${user.username} é ${media.toFixed(2)}` });
         } catch (error) {
             response.status(500).json({ error: 'An error occurred while fetching the user.' });
+        }
+    }
+
+    async createUser(request, response) {
+        const userData = request.body;
+
+        try {
+            const user = await userService.create(userData);
+            response.status(201).json(user);
+        } catch (error) {
+            response.status(500).json({ error: 'An error occurred while creating the user.' });
         }
     }
 }

@@ -11,6 +11,14 @@ export class UserService {
             return resolve(user);
         })
     }
+
+    create(userData) {
+        return new Promise((resolve) => {
+            const newUser = { id: users.length + 1, ...userData };
+            users.push(newUser);
+            return resolve(newUser);
+        })
+    }
 }
 
 export default new UserService();
